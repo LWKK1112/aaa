@@ -1,0 +1,79 @@
+import random
+import sys
+from datetime import datetime
+
+while True:
+    cut_line = "*" * 20
+    print("{0}欢迎进入数字猜猜猜小游戏{0}".format(cut_line))
+    start_num = input("数字区间起始值:")
+    if not start_num.isdigit():
+        print("-" * 20)
+        print("请根据提示输入正确内容！")
+        continue
+
+    stop_num = input("数字区间终止值:")
+    if not stop_num.isdigit():
+        print("-" * 20)
+        print("请根据提示输入正确内容！")
+        continue
+    #break
+    if int(stop_num) < int(start_num):
+        print("-" * 20)
+        print("终止值不可小于起始值，请重新输入！")
+        continue
+    elif int(stop_num) == int(start_num):
+        print("您输入的区间数字相同，请重新启动程序!")
+        sys.exit()
+
+    num_limits = []
+    num_limits.append(start_num)
+    num_limits.append(stop_num)
+    print(num_limits)
+    print("所产生的随机数字区间为:[{0}, {1}]".format(num_limits[0], num_limits[1]))
+    rand1 = random.randint(int(num_limits[0]), int(num_limits[1]))
+    print(rand1)
+    # 判断猜的数字是否相等
+    temp = 0
+    while True:
+        input_num = input("请继续输入您猜测的数字:")
+        if input_num.isdigit():
+            if int(input_num) in range(int(num_limits[0]), int(num_limits[1]) + 1):
+                if int(input_num) > rand1:
+                    print("大了")
+                    temp += 1
+                    with open("write2.txt", "a+", encoding="utf-8") as f:
+                        f.write("{2}:您第{0}次猜的数字为{1}".format(temp, input_num, datetime.now()))
+                        f.write("\n")
+                    continue
+                elif int(input_num) < rand1:
+                    print("小了")
+                    temp += 1
+                    with open("write2.txt", "a+", encoding="utf-8") as f:
+                        f.write("{2}:您第{0}次猜的数字为{1}".format(temp, input_num, datetime.now()))
+                        f.write("\n")
+                    continue
+                elif int(input_num) == rand1:
+                    temp += 1
+                    with open("write2.txt", "a+", encoding="utf-8") as f:
+                        f.write("{2}:您第{0}次猜的数字为{1}".format(temp, input_num, datetime.now()))
+                        f.write("\n")
+                        f.write("*"* 45)
+                        f.write("\n")
+                    print("恭喜只用了{0}次就猜对了!".format(temp))
+                    print("请重新启动程序!")
+                    print(temp)
+                    sys.exit()
+            else:
+                print("输入有误，请重新输入")
+                temp += 1
+                with open("write2.txt", "a+", encoding="utf-8") as f:
+                    f.write("{2}:您第{0}次猜的数字为{1}".format(temp, input_num, datetime.now()))
+                    f.write("\n")
+                continue
+        else:
+            print("输入有误，请重新输入")
+            temp += 1
+            with open("write2.txt", "a+", encoding="utf-8") as f:
+                f.write("{2}:您第{0}次猜的数字为{1}".format(temp, input_num, datetime.now()))
+                f.write("\n")
+            continue
