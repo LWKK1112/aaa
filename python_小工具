@@ -1,0 +1,61 @@
+import random
+# 生成双色球号码
+def random_num(num):
+    for j in range(0, int(num)):
+        for i in range(0, 6):
+            red = random.randint(1, 33)
+            print(red, end=' ')
+        blue = random.randint(1, 16)
+        print(blue)
+# 查找号码或机构
+def find_phone(keyword):
+    phone_list = phone_num.split("，")
+    for p in phone_list:
+        if p.find(keyword) != -1:
+            print(p)
+# 获取天气情况
+def get_weather(city):
+    city_list = weather_str.split("~")
+    # print(city_list)
+    weather_data = {}
+    for i in city_list:
+        w = i.split("，")
+        weather = {'name': w[0], 'date': w[1], 'weather': w[2], 'max': w[3], 'min': w[4], 'wind': w[5]}
+        weather_data[weather["name"]] = weather
+        # print(weather_data)
+    if city in weather_data:
+        return weather_data.get(city)
+    else:
+        return {}
+
+phone_num = "报警电话120，火警电话119，急救电话120，中国移动10086，中国联通10010"
+weather_str = "北京，2019年5月27日，多云，8℃，-4℃，南风3级~上海，2019年5月27日，多云，8℃，-4℃，南风3级~重庆，2019年5月27日，多云，8℃，-4℃，南风3级~黑龙江，2019年5月27日，多云，8℃，-4℃，南风3级"
+while (True):
+    print("1-双色球随机选号")
+    print("2-号码百事通")
+    print("3-明日天气预报")
+    print("0-结束程序")
+    c = input("请输入功能编号:")
+    #调用生成双色球函数
+    if c == "1":
+        n = input("您要生成几注号码：")
+        random_num(num=n)
+    # 调用查找号码函数
+    elif c == "2":
+        n = input("请输入您想查找的电话或机构：")
+        find_phone(keyword=n)
+    # 调用获取天气函数
+    elif c == "3":
+        n = input("请输入您要查询的城市：")
+        w = get_weather(n)
+        #print(w)
+        if "name" in w:
+            print("{date}，{name}，{weather}，{max}/{min}，{wind}".format_map(w))
+        else:
+            print("未找到{}的天气情况".format(n))
+    # 退出程序
+    elif c == "0":
+        break
+    else:
+        print("输入有误")
+print("感谢您的使用，祝您生活愉快！")
