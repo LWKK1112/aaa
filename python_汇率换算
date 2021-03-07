@@ -1,0 +1,48 @@
+# 循环输出系统
+while (True):
+    # 将系统的四个选项储存到字典中
+    service_menu = {'1': '人民币转换美元', '2': '美元转换人民币', '3': '人民币转换欧元', '0': '结束程序'}
+    print("********欢迎使用货币转换服务系统********")
+    # 遍历service_menu字典，以 k.v 的形式输出
+    for k,v in service_menu.items():
+        print(k + '.', v)
+    # 用户输入选项对应的数字进行功能选择
+    Your_Choice = input("请您选择需要的服务：")
+    # 判断用户输入的内容是否为数字并且在[0,4)内
+    if Your_Choice.isdigit() and int(Your_Choice) in range(0, 4):
+        Your_Choice = int(Your_Choice)
+        # 用户输入数字1时进入人民币转换美元服务界面
+        if Your_Choice == 1:
+            print("{}\n欢迎使用人民币转换美元服务".format("~" * 35))
+            your_money = input("请输入您需要转换的人民币金额：")
+            your_money = int(your_money)
+            # 根据对应汇率进行换算并取到小数点后两位进行输出
+            RMB_to_US = your_money / 6.72
+            print("您需要转换的人民币为：{}元\n兑换成美元为：{:0.2f}$".format(your_money, RMB_to_US))
+            print("=" * 35)
+        # 用户输入数字1时进入美元转换人民币服务界面
+        elif Your_Choice == 2:
+            print("{}\n欢迎使用美元转换人民币服务".format("~" * 35))
+            your_money = input("请输入您需要转换的美元金额：")
+            your_money = int(your_money)
+            US_to_RMB = your_money * 6.72
+            print("您需要转换的美元为：{}$\n兑换成人民币为：{:0.2f}元".format(your_money, US_to_RMB))
+            print("=" * 35)
+        # 用户输入数字3时进入欧元转换人民币服务界面
+        elif Your_Choice == 3:
+            print("{}\n欢迎使用人民币转换欧元服务".format("~" * 35))
+            your_money = input("请输入您需要转换的人民币金额：")
+            your_money = int(your_money)
+            RMB_to_EUR = your_money * 0.13
+            print("您需要转换的人民币为：{}元\n兑换成欧元为：{:0.2f}欧元".format(your_money, RMB_to_EUR))
+            print("=" * 35)
+        # 用户输入数字0时退出服务系统
+        elif Your_Choice == 0:
+            break
+    # 用户输入内容不符合要求时提示错误
+    else:
+        print("~" * 35)
+        print("输入有误，请重新输入！")
+        print("=" * 35)
+# 用户退出系统时感谢语
+print("感谢您的使用，祝您生活愉快，再见！")
