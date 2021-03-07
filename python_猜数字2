@@ -1,0 +1,145 @@
+"""1.显示欢迎进入游戏
+2.提示用户输入数字区间 
+3.判断用户输入的内容是否为数字（isdigit()方法的对象不能是int型，所以放到4前面 
+4.将用户输入的区间数字转化为int型，并储存在列表中
+5.判断输入的起始数和终止数是否合理：起始数 != 终止数 and 起始数 < 终止数
+6.在区间内产生一个随机数
+7.无限循环体，提示用户输入猜的数字，并定义一个temp变量储存用户输入的次数
+8.在循环体中，先判断用户输入的内容是否为数字并且是否在区间范围内
+9.在循环体中，判断用户输入的数字与系统产生的随机数的大小关系，并且在比较后提示比随机数大了还是小了，此时temp += 1，
+并向record文档中写入此次所猜数字的值以及系统时间
+10.在循环体中，当用户输入的数字与系统产生的随机数相等时，提示用户用了多少次猜对，并退出程序
+"""
+import random
+import sys
+from datetime import datetime
+
+
+# 欢迎进入游戏提示语
+def guide_page():
+    cut_line = "*" * 20
+    print("{0}欢迎进入数字猜猜猜小游戏{0}".format(cut_line))
+
+
+# 判断输入的内容是否为数字,
+def is_or_not_num(n):
+    # 若为数字则返回布尔值True
+    m = n.isdigit()
+    return m
+
+
+# 将用户输入的str类型数字转化为int型
+def construct_range_value(input_num):
+    # 将输入的str类型数字转化为int型
+    input_int_num = int(input_num)
+    # 将转化后的int型数字放入列表储存
+    input_numlist.append(input_int_num)
+    # 返回储存有区间范围的列表
+    return input_numlist
+
+
+# 在用户限定的范围内生成一个随机数
+def set_final_num(num1, num2):
+    # 在传入的两个数字范围间产生一个随机数
+    random_num = random.randint(num1, num2)
+    return random_num
+
+
+# 判断用户猜的数字是否在限定的区间内
+def check_num_legal(guess_num):
+    guess_num = int(guess_num)
+    # 如果用户猜测的数字在限定的区间内则返回布尔值True
+    if input_numlist[0] <= guess_num <= input_numlist[1]:
+        return True
+
+
+# 判断输入值与随机生成的数字是否相等
+def num_equal(input_num, random_num):
+    # 定义一个变量的值来反映传入的两个数字的大小关系
+    relation_of_num = 0
+    input_num = int(input_num)
+    # 两数相等时，变量relation_of_num的值为0
+    if input_num == random_num:
+        return relation_of_num
+    # 用户猜测的数字比系统产生的随机数小时，变量relation_of_num的值为-1
+    elif input_num < random_num:
+        relation_of_num = -1
+        return relation_of_num
+    # 用户猜测的数字比系统产生的随机数大时，变量relation_of_num的值为1
+    else:
+        relation_of_num = 1
+        return relation_of_num
+
+
+# 将用户每一次猜的数字以及时间写入到record文档中
+def write_record(temp, guess_num):
+    # with语句打开以附加读写模式打开record.txt文件，并向里面写入用户每次猜测的数字以及当时的系统时间
+    with open("record.txt", "a+", encoding="utf-8") as f:
+        f.write("{2}:您第{0}次猜的数字为{1}".format(temp, guess_num, datetime.now()))
+        f.write("\n")
+
+
+# 主体函数
+def main(rand1):
+    # 定义一个变量记录用户猜测数字的次数
+    temp = 0
+    # 循环提示用户输入猜测的数字
+    while True:
+        guess_num = input("请继续输入您猜测的数字：")
+        # 利用两个函数判断用户输入的内容是否为数字以及为数字时是否在限定区间内
+        if is_or_not_num(guess_num) and check_num_legal(guess_num):
+            relation_of_num = num_equal(guess_num, rand1)
+            if relation_of_num == 0:
+                temp += 1
+                write_record(temp, guess_num)
+                print("*" * 20)
+                print("恭喜只用了{0}次就猜对了!".format(temp))
+                print("请重新启动程序!")
+                sys.exit()
+            elif relation_of_num == -1:
+                temp += 1
+                write_record(temp, guess_num)
+                print("*" * 20)
+                print("lower than the answer!")
+                continue
+            elif relation_of_num == 1:
+                temp += 1
+                write_record(temp, guess_num)
+                print("*" * 20)
+                print("higher than the answer!")
+                continue
+        else:
+            temp += 1
+            write_record(temp, guess_num)
+            print("对不起!您输入的数字未在指定区间!!")
+            print("*" * 20)
+            continue
+
+
+# 程序逻辑执行流程
+if __name__ == '__main__':
+    while True:
+        input_numlist = []
+        guide_page()
+        i = input("数字区间起始值:")
+        if not is_or_not_num(i):
+            print("-" * 20)
+            print("请根据提示输入正确内容！")
+            continue
+        j = input("数字区间终止值:")
+        if not is_or_not_num(j):
+            print("-" * 20)
+            print("请根据提示输入正确内容！")
+            continue
+        construct_range_value(i)
+        construct_range_value(j)
+        if int(input_numlist[1]) < int(input_numlist[0]):
+            print("-" * 20)
+            print("终止值不可小于起始值，请重新输入！")
+            continue
+        elif int(input_numlist[1]) == int(input_numlist[0]):
+            print("您输入的区间数字相同，请重新启动程序!")
+            sys.exit()
+        print("所产生的随机数字区间为:[{0}, {1}]".format(input_numlist[0], input_numlist[1]))
+        rand1 = set_final_num(input_numlist[0], input_numlist[1])
+        main(rand1)
