@@ -1,0 +1,33 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Book {
+public:
+    void Print();
+    Book(char* n, char* au, char* num, char* pu, float x);
+protected:
+    char b_name[50], b_author[50];
+    char b_number[50], b_pub[50];
+    float b_price;
+};
+
+void Book::Print() {
+    cout << b_name << "-" << b_author << endl;
+    cout << b_number << "-" << b_pub << endl;
+    cout << "价格是" << b_price << endl;
+
+}
+
+Book::Book(char* n, char* au, char* num, char* pu, float x) {
+    strcpy_s(b_name, n);
+    strcpy_s(b_author, au);
+    strcpy_s(b_number, num);
+    strcpy_s(b_pub, pu);
+    b_price = x;
+        }
+
+int main() {
+    Book a( "花湖",  "liuwk",  "46257",  "中国人民出版社", 25.2);
+    a.Print();
+}
